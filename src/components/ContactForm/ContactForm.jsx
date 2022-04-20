@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import s from './ContactForm.module.css';
 import PropTypes from 'prop-types';
-import contactsAction from '../../redux/contacts-action';
 import { getItems } from '../../redux/contacts-selector';
+import { useAddContactMutation } from '../../redux/contacts-slice';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ContactForm = () => {
+  const [addContact, { isLoading }] = useAddContactMutation();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const dispatch = useDispatch();
   const items = useSelector(getItems);
 
   const handleInputChange = e => {
@@ -31,10 +33,16 @@ const ContactForm = () => {
   const handleSubmit = e => {
     e.preventDefault();
     if (findSameName()) {
-      alert(`${name} is already in contacts`);
+      toast.error(`${name} is already in contacts`);
+      resetValue();
       return;
     }
-    dispatch(contactsAction.addContact(name, number));
+    addContact({ name, number });
+    toast.success(`${name} is successfully added in contacts`);
+    resetValue();
+  };
+
+  const resetValue = () => {
     setName('');
     setNumber('');
   };
@@ -69,8 +77,8 @@ const ContactForm = () => {
           autoComplete="off"
         />
       </label>
-      <button type="submit" className={s.btn}>
-        Add contact
+      <button type="submit" className={s.btn} disabled={isLoading}>
+        {isLoading ? 'Adding...' : 'Add contact'}
       </button>
     </form>
   );

@@ -1,5 +1,6 @@
-export const getItems = state => state.contacts.items;
-export const getFilter = state => state.contacts.filter;
+export const getItems = state =>
+  state.contactsApi.queries['fetchContacts(undefined)']?.data;
+export const getFilter = state => state.filter;
 
 export const getFilteredContacts = state => {
   const items = getItems(state);

@@ -8,7 +8,8 @@
   border-radius: 5px;
   border: solid 3px;
   transition: 250ms;
-  border: solid 3px#fff;
+  border: solid 3px#c9d1d9;
+  background-color: #c9d1d9;
 }
 
 .input:hover,
@@ -22,11 +23,12 @@
   border-radius: 5px;
   border: solid 2px teal;
   transition: 250ms;
+  background-color: #c9d1d9;
 }
 
 .btn:hover,
 .btn:focus {
-  color: #fff;
+  color: #c9d1d9;
   background-color: teal;
-  border-color: #ffffff;
+  border-color: #c9d1d9;
 }

@@ -1,24 +1,43 @@
 .list {
+  margin-top: 30px;
   font-weight: bold;
   color: teal;
+}
+.item {
+  line-height: 1.5;
+  align-items: center;
+}
+.span {
+  color: #c9d1d9;
+}
+.loader {
+  position: absolute;
+  display: inline-block;
 }
 
 .item:not(:last-child) {
   margin-bottom: 15px;
 }
+.title {
+  display: inline-block;
+}
 
 .btn {
+  display: block;
   cursor: pointer;
-  margin-left: 10px;
+  margin-top: 10px;
+  margin-right: auto;
+  margin-bottom: 15px;
   padding: 3px 9px;
   border-radius: 5px;
   border: solid 2px teal;
   transition: 250ms;
+  background-color: #c9d1d9;
 }
 
 .btn:hover,
 .btn:focus {
-  color: #ffffff;
+  color: #c9d1d9;
   background-color: teal;
-  border-color: #ffffff;
+  border-color: #c9d1d9;
 }

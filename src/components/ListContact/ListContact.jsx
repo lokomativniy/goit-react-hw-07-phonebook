@@ -1,33 +1,41 @@
 import React from 'react';
 import s from './ListContact.module.css';
-import contactsAction from '../../redux/contacts-action';
-import { useSelector, useDispatch } from 'react-redux';
-import { getFilteredContacts } from '../../redux/contacts-selector';
-import PropTypes from 'prop-types';
+
+import { useSelector } from 'react-redux';
+import { getFilter } from '../../redux/contacts-selector';
+import { useFetchContactsQuery } from '../../redux/contacts-slice.js';
+import ItemListContact from '../ItemListContact/ItemListContact';
+import Loader from '../Loader';
+import { toast } from 'react-toastify';
 
 const ListContact = () => {
-  const items = useSelector(getFilteredContacts);
-  const dispatch = useDispatch();
-  const deleteContact = id => dispatch(contactsAction.deleteContact(id));
-  return (
-    <ul className={s.list}>
-      {items.map(({ id, name, number }) => {
-        return (
-          <li key={id} className={s.item}>
-            {name}: {number}
-            <button className={s.btn} onClick={() => deleteContact(id)}>
-              Delete
-            </button>
-          </li>
-        );
-      })}
-    </ul>
-  );
-};
+  const filtered = useSelector(getFilter);
+  const { data: contacts, error, isFetching } = useFetchContactsQuery();
+  const normalizedFilter = filtered.toLowerCase();
+  console.log(error);
 
-ListContact.propTypes = {
-  items: PropTypes.array,
-  deleteContact: PropTypes.func,
+  const filteredContacts = () => {
+    if (contacts) {
+      return contacts.filter(({ name }) =>
+        name.toLowerCase().includes(normalizedFilter),
+      );
+    }
+  };
+
+  return (
+    <div>
+      <h2 className={s.title}>Contacts</h2>
+      <div className={s.loader}>{isFetching && <Loader />}</div>
+      {error && toast.error('Something went wrong')}
+      {contacts && (
+        <ul className={s.list}>
+          {filteredContacts().map(contact => (
+            <ItemListContact key={contact.id} {...contact} />
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 };
 
 export default ListContact;
